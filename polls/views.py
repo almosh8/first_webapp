@@ -46,9 +46,9 @@ def add_items(request):
             item = Offer(pk=item_dict['id'])
             item.price = item_dict['price']
         elif type == CATEGORY:
-            try:  # save current category info
+            try:  # save current parent_category info
                 item = Category.objects.get(pk=item_dict['id'])
-            except ObjectDoesNotExist:  # add new category
+            except ObjectDoesNotExist:  # add new parent_category
                 item = Category(pk=item_dict['id'])
         else:
             raise ValueError
@@ -78,7 +78,7 @@ def add_items(request):
                 add_item(item)
             except:
                 return Response('{"code": 400,"message": "Validation Failed"}', status=400)
-        else:  # Parent category does not exist yet
+        else:  # Parent parent_category does not exist yet
             if parent not in children:
                 children[parent] = []
             children[parent].append(item)

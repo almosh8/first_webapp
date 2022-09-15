@@ -6,8 +6,8 @@ from rest_framework import serializers
 
 from polls.models import Offer
 
-CATEGORY = 'CATEGORY'
-OFFER = 'OFFER'
+CATEGORY = 'FOLDER'
+OFFER = 'FILE'
 
 
 class Item:
@@ -19,6 +19,7 @@ class Item:
         self.children = dict['children']
         self.update_date = dict['updateDate']
         self.parent_id = dict['ParentId']
+        self.url = dict['url']
 
 
 class MyDeserializer:
@@ -58,6 +59,7 @@ class ItemSerializer:
         dict['type'] = OFFER if isinstance(item, Offer) else CATEGORY
         dict['name'] = item.name
         dict['id'] = item.id
+        dict['url'] = item.url
         dict['parentId'] = None if item.parent_category is None else item.parent_category.id
         dict['price'] = item.price if isinstance(item, Offer) else item.average_price()
         dict['date'] = str(item.update_date.isoformat(timespec='milliseconds')).replace('+00:00', 'Z')

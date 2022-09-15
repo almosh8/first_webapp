@@ -18,8 +18,8 @@ import pytz
 from polls.models import Offer, Category
 from polls.serializers import ItemSerializer, MyDeserializer, MySerializer
 
-CATEGORY = 'CATEGORY'
-OFFER = 'OFFER'
+CATEGORY = 'FOLDER'
+OFFER = 'FILE'
 SUCCESS_CODE = 200
 
 

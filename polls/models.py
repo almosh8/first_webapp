@@ -16,6 +16,7 @@ class Category(models.Model):
     sum_children = models.IntegerField(default=0)
     count_children = models.IntegerField(default=0)
     update_date = models.DateTimeField(default=now)
+    url = models.CharField(max_length=222, null=True)
 
 
 
@@ -60,6 +61,7 @@ class Offer(models.Model):
     parent_category = models.ForeignKey(Category, on_delete=models.CASCADE)
     price = models.IntegerField()
     update_date = models.DateTimeField(default=now)
+    url = models.CharField(max_length=222, null=True)
 
     def commit(self):
         print(f'commiting {self.name}...')

@@ -1,6 +1,5 @@
 from abc import abstractmethod, ABC
 
-from django.core.exceptions import ObjectDoesNotExist
 
 import polls.models
 import operator

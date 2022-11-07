@@ -4,6 +4,8 @@ from django.test import TestCase
 from django.utils.datetime_safe import datetime
 from django.utils.timezone import now
 
+print('outer folder')
+
 from polls.controllers.import_controller import *
 from polls.models import Category, Offer
 

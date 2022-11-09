@@ -6,7 +6,7 @@ from django.utils.timezone import now
 
 print('outer folder')
 
-from polls.controllers.import_controller import *
+from polls.controllers.import_controller.parent_category_updater import *
 from polls.models import Category, Offer
 
 

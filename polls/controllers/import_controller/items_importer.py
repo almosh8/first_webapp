@@ -1,38 +1,42 @@
 from polls.config import ItemType
+from polls.controllers.models_objects_queries.item_objects_queries.get_queries import item_exists
 from polls.models.items.Category import Category
 
 
 class ItemsImporter:
+
+    items_to_add_after_parent_added = None
 
     def __init__(self, batch: dict):
         self.update_date = batch['updateDate']
         self.items = batch['items']
 
     def add_items(self):
-        children = {}
-
         for item in self.items:
             self.add_item(item)
 
-    def add_item(self, item: dict):
-        if
+    class ItemImporter:
 
-        parent = item['parentId']
-        # print(parent is None)
-        if parent is None or parent == 'None' or Category.objects.filter(pk=parent).exists():
-            try:
-                add_item(item)
-            except:
-                return Response('{"code": 400,"message": "Validation Failed"}', status=400)
-        else:  # Parent parent_category does not exist yet
-            if parent not in children:
-                children[parent] = []
-            children[parent].append(item)
+        def __init__(self, item: dict):
+            self.item = item
+            self.parent_item_id = item['parentId']
 
-    def must_add_parent_first(self, item: dict):
-        parent = item['parentId']
-        return parent is not None and\
-               not Category.objects.filter(pk=parent).exists()
+
+        def add_item(self):
+            if self.must_add_parent_first():
+                self.remember_item_waiting_for_parent()
+            else:
+                self.make_and_save_item_model()
+
+        def must_add_parent_first(self):
+            return (self.parent_item_id is not None) and (not item_exists(pk=self.parent_item_id))
+
+        def remember_item_waiting_for_parent(self):
+            global items_to_add_after_parent_added
+            if self.parent_item_id not in items_to_add_after_parent_added:
+                items_to_add_after_parent_added[self.parent_item_id] = []
+            items_to_add_after_parent_added[self.parent_item_id].append(self.item)
+
 
     def set_item_properties(self, item_dict):
 

@@ -13,7 +13,8 @@ class ItemsImporter:
 
     def add_items(self):
         for item in self.items:
-            self.add_item(item)
+            item_importer = self.ItemImporter(item)
+            item_importer.add_item()
 
     class ItemImporter:
 
@@ -36,6 +37,37 @@ class ItemsImporter:
             if self.parent_item_id not in items_to_add_after_parent_added:
                 items_to_add_after_parent_added[self.parent_item_id] = []
             items_to_add_after_parent_added[self.parent_item_id].append(self.item)
+
+        def make_and_save_item_model(self):
+            item_model = self.make_item_model(self)
+            self.save_item_model(item_model)
+
+        def make_item_model(self):
+            item_type = self.item['type']
+            if item_type ==
+
+
+
+            type = self.item['type']
+            parent_id = self.item['parentId']
+            if type == ItemType.OFFER.value:
+                item = Offer(pk=self.item['id'])
+                item.price = self.item['price']
+            elif type == ItemType.CATEGORY.value:
+                try:  # save current parent_category info
+                    item = Category.objects.get(pk=self.item['id'])
+                except ObjectDoesNotExist:  # add new parent_category
+                    item = Category(pk=self.item['id'])
+            else:
+                raise ValueError
+
+            item.name = self.item['name']
+            item.pk = self.item['id']
+            if parent_id is not None:
+                item.parent_category = Category.objects.get(pk=parent_id)
+            item.update_date = isoparse(update_date)
+
+
 
 
     def set_item_properties(self, item_dict):

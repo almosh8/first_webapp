@@ -1,6 +1,9 @@
+from dateutil.parser import isoparse
+
 from polls.config import ItemType
-from polls.controllers.models_objects_queries.item_objects_queries.get_queries import item_exists
+from polls.controllers.models_objects_queries.item_objects_queries.get_queries import item_exists, get_item
 from polls.models.items.Category import Category
+from polls.models.items.Offer import Offer
 
 
 class ItemsImporter:
@@ -21,6 +24,8 @@ class ItemsImporter:
         def __init__(self, item: dict):
             self.item = item
             self.parent_item_id = item['parentId']
+            self.item_type = item['type']
+            self.item_model = None
 
 
         def add_item(self):
@@ -39,33 +44,38 @@ class ItemsImporter:
             items_to_add_after_parent_added[self.parent_item_id].append(self.item)
 
         def make_and_save_item_model(self):
-            item_model = self.make_item_model(self)
-            self.save_item_model(item_model)
+            self.create_item_model(self)
+            self.set_item_model_properties(self)
+            self.save_item_model()
 
-        def make_item_model(self):
-            item_type = self.item['type']
-            if item_type ==
-
-
-
-            type = self.item['type']
-            parent_id = self.item['parentId']
-            if type == ItemType.OFFER.value:
-                item = Offer(pk=self.item['id'])
-                item.price = self.item['price']
-            elif type == ItemType.CATEGORY.value:
-                try:  # save current parent_category info
-                    item = Category.objects.get(pk=self.item['id'])
-                except ObjectDoesNotExist:  # add new parent_category
-                    item = Category(pk=self.item['id'])
+        def create_item_model(self):
+            if self.item_type == ItemType.OFFER.value:
+                self.item_model = Offer()
+                self.set_specific_offer_model_properties()
+            elif self.item_type == ItemType.CATEGORY.value:
+                self.item_model = Category()
+                self.set_specific_category_model_properties()
             else:
                 raise ValueError
+            self.set_unspecific_item_model_properties()
 
-            item.name = self.item['name']
-            item.pk = self.item['id']
-            if parent_id is not None:
-                item.parent_category = Category.objects.get(pk=parent_id)
-            item.update_date = isoparse(update_date)
+        def set_specific_offer_model_properties(self):
+            self.item_model.price = self.item['price']
+
+        def set_specific_category_model_properties(self):
+            existing_category_model = get_item(self.item['id'])
+            if existing_category_model is not None:
+                self.item_model.sum_children = existing_category_model.sum_children
+                self.item_model.count_children = existing_category_model.count_children
+
+        def set_unspecific_item_model_properties(self):
+
+            self.item_model.name = self.item['name']
+            self.item_model.id = self.item['id']
+            if self.parent_item_id is not None:
+                self.item_model.parent_category = get_item(self.parent_item_id)
+            global update_date
+            self.item_model.update_date = isoparse(update_date)
 
 
 

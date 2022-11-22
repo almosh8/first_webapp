@@ -1,3 +1,5 @@
+from django.core.exceptions import ObjectDoesNotExist
+
 from . import item_objects, category_objects, offer_objects
 
 
@@ -8,5 +10,5 @@ def item_exists(pk):
 def get_item(pk):
     try:
         return item_objects.get(pk=pk)
-    except item_objects.DoesNotExist:
+    except ObjectDoesNotExist:
         return None

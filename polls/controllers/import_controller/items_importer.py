@@ -11,11 +11,12 @@ class ItemsImporter:
 
 
     def __init__(self, batch: dict):
-        self.update_date = batch['updateDate']
         self.items = batch['items']
 
         global items_to_add_after_parent_added
         items_to_add_after_parent_added = {}
+        global update_date
+        update_date = batch['updateDate']
 
     def import_items(self):
         for item in self.items:

@@ -7,6 +7,7 @@ class Item(PolymorphicModel):
     id = models.CharField(max_length=99, primary_key=True)
     name = models.CharField(max_length=200, default='unnamed')
     update_date = models.DateTimeField(default=now)
+    parent_category = models.ForeignKey('self', on_delete=models.CASCADE, null=True, default=None)
 
     # objects = InheritanceManager()
 
@@ -30,5 +31,3 @@ class ItemBuilder:
     def set_parent_category(self, parent_category):
         self.item.parent_category = parent_category
         return self
-
-    def set_price(self, price):

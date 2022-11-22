@@ -1,5 +1,11 @@
 from enum import Enum
 
-class ItemType(Enum):
+from polls.models.items.Category import Category
+from polls.models.items.Offer import Offer
+
+
+class ItemTypeString(Enum):
     CATEGORY = 'CATEGORY'
-    OFFER = 'FILE'
+    OFFER = 'OFFER'
+
+ItemTypeDict = {'CATEGORY': Category, 'OFFER': Offer}

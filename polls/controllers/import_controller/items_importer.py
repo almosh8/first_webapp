@@ -1,23 +1,26 @@
 from dateutil.parser import isoparse
 
-from polls.config import ItemType
+from polls.config import ItemTypeString
 from polls.controllers.models_objects_queries.item_objects_queries.get_queries import item_exists, get_item
 from polls.models.items.Category import Category
 from polls.models.items.Offer import Offer
 
+items_to_add_after_parent_added = None
 
 class ItemsImporter:
 
-    items_to_add_after_parent_added = None
 
     def __init__(self, batch: dict):
         self.update_date = batch['updateDate']
         self.items = batch['items']
 
-    def add_items(self):
+        global items_to_add_after_parent_added
+        items_to_add_after_parent_added = {}
+
+    def import_items(self):
         for item in self.items:
             item_importer = self.ItemImporter(item)
-            item_importer.add_item()
+            item_importer.import_item()
 
     class ItemImporter:
 
@@ -28,7 +31,7 @@ class ItemsImporter:
             self.item_model = None
 
 
-        def add_item(self):
+        def import_item(self):
             if self.must_add_parent_first():
                 self.remember_item_waiting_for_parent()
             else:
@@ -44,15 +47,14 @@ class ItemsImporter:
             items_to_add_after_parent_added[self.parent_item_id].append(self.item)
 
         def make_and_save_item_model(self):
-            self.create_item_model(self)
-            self.set_item_model_properties(self)
+            self.make_item_model()
             self.save_item_model()
 
-        def create_item_model(self):
-            if self.item_type == ItemType.OFFER.value:
+        def make_item_model(self):
+            if self.item_type == ItemTypeString.OFFER.value:
                 self.item_model = Offer()
                 self.set_specific_offer_model_properties()
-            elif self.item_type == ItemType.CATEGORY.value:
+            elif self.item_type == ItemTypeString.CATEGORY.value:
                 self.item_model = Category()
                 self.set_specific_category_model_properties()
             else:
@@ -84,10 +86,10 @@ class ItemsImporter:
 
         type = item_dict['type']
         parent_id = item_dict['parentId']
-        if type == ItemType.OFFER.value:
+        if type == ItemTypeString.OFFER.value:
             item = Offer(pk=item_dict['id'])
             item.price = item_dict['price']
-        elif type == ItemType.CATEGORY.value:
+        elif type == ItemTypeString.CATEGORY.value:
             try:  # save current parent_category info
                 item = Category.objects.get(pk=item_dict['id'])
             except ObjectDoesNotExist:  # add new parent_category

@@ -12,7 +12,6 @@ class ParentCategoryUpdater(ABC):
     def __init__(self, child):
         self.child = child
         self.parent_category = child.parent_category
-        pass
 
     def update_parents(self):
         if self.parent_category is not None:

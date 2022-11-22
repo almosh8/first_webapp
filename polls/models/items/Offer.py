@@ -9,4 +9,4 @@ class Offer(Item):
     price = models.IntegerField(default=0)
 
     # moved this to parent class
-    parent_category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, default=None)
+    # parent_category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, default=None)

@@ -4,8 +4,6 @@ from django.test import TestCase
 from django.utils.datetime_safe import datetime
 from django.utils.timezone import now
 
-print('outer folder')
-
 from polls.controllers.import_controller.parent_category_updater import *
 from polls.models import Category, Offer
 
@@ -19,8 +17,11 @@ class ParentCategoryUpdaterTest(TestCase):
 
     def setUp(self):
         self.root_category = Category(sum_children=self.INITIAL_SUM, count_children=self.INITIAL_COUNT)
+        self.root_category.save()
         self.child_category = Category(sum_children=self.INITIAL_SUM, count_children=self.INITIAL_COUNT, parent_category=self.root_category)
+        self.child_category.save()
         self.child_offer = Offer(price=self.INITIAL_OFFER_PRICE, parent_category=self.child_category)
+        self.child_offer.save()
 
     def test_child_offer_removed(self):
         parent_updater = ChildRemover(self.child_offer)

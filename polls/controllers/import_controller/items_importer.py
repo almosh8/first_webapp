@@ -1,6 +1,7 @@
 from dateutil.parser import isoparse
 
 from polls.config import ItemTypeString
+from polls.controllers.import_controller import ChildRemover, ChildAdder
 from polls.controllers.models_objects_queries.item_objects_queries.get_queries import item_exists, get_item
 from polls.models.items.Category import Category
 from polls.models.items.Offer import Offer
@@ -80,33 +81,17 @@ class ItemsImporter:
             global update_date
             self.item_model.update_date = isoparse(update_date)
 
+        def save_item_model(self):
+            self.update_existing_variant_parents()
+            self.update_new_variant_parents()
+            self.item_model.save()
 
+        def update_existing_variant_parents(self):
+            existing_item_model = get_item(self.item_model.id)
+            if existing_item_model is not None:
+                item_remover = ChildRemover(existing_item_model)
+                item_remover.update_parents()
 
-
-    def set_item_properties(self, item_dict):
-
-        type = item_dict['type']
-        parent_id = item_dict['parentId']
-        if type == ItemTypeString.OFFER.value:
-            item = Offer(pk=item_dict['id'])
-            item.price = item_dict['price']
-        elif type == ItemTypeString.CATEGORY.value:
-            try:  # save current parent_category info
-                item = Category.objects.get(pk=item_dict['id'])
-            except ObjectDoesNotExist:  # add new parent_category
-                item = Category(pk=item_dict['id'])
-        else:
-            raise ValueError
-
-        item.name = item_dict['name']
-        item.pk = item_dict['id']
-        if parent_id is not None:
-            item.parent_category = Category.objects.get(pk=parent_id)
-        item.update_date = isoparse(update_date)
-        print(f'item saved {item_dict}')
-        item.commit()
-
-        if item.pk in children:  # children not added yet
-            for child in children[item.pk]:
-                add_item(child)
-            children[item.pk].clear()
+        def update_new_variant_parents(self):
+            item_adder = ChildAdder(self.item_model)
+            item_adder.update_parents()

@@ -1,12 +1,11 @@
 from dateutil.parser import isoparse
 
 from polls.config import ItemTypeString
-from polls.controllers.import_controller import ChildRemover, ChildAdder
+from polls.controllers.import_controller import ChildRemover, ChildAdder, pending_items_manager
 from polls.controllers.models_objects_queries.item_objects_queries.get_queries import item_exists, get_item
 from polls.models.items.Category import Category
 from polls.models.items.Offer import Offer
 
-items_to_add_after_parent_added = None
 
 class ItemsImporter:
 
@@ -14,8 +13,7 @@ class ItemsImporter:
     def __init__(self, batch: dict):
         self.items = batch['items']
 
-        global items_to_add_after_parent_added
-        items_to_add_after_parent_added = {}
+        pending_items_manager.forget_all()
         global update_date
         update_date = batch['updateDate']
 
@@ -43,10 +41,7 @@ class ItemsImporter:
             return (self.parent_item_id is not None) and (not item_exists(pk=self.parent_item_id))
 
         def remember_item_waiting_for_parent(self):
-            global items_to_add_after_parent_added
-            if self.parent_item_id not in items_to_add_after_parent_added:
-                items_to_add_after_parent_added[self.parent_item_id] = []
-            items_to_add_after_parent_added[self.parent_item_id].append(self.item)
+            pending_items_manager.add_pending_item(self.parent_item_id, self.item)
 
         def make_and_save_item_model(self):
             self.make_item_model()

@@ -1,5 +1,5 @@
 from .contrillers_tests.import_controller_tests.parent_category_updater_test import *
-from .contrillers_tests.import_controller_tests.items_importet_test import *
+from .contrillers_tests.import_controller_tests.items_importer_test import *
 from .contrillers_tests.delete_controller_tests import *
 from .contrillers_tests.export_controller_tests import *
 from .contrillers_tests.recent_sales_controller_tests import *

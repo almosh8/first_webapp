@@ -9,18 +9,26 @@ from polls.models.items.Offer import Offer
 
 class ItemsImporter:
 
-
     def __init__(self, batch: dict):
         self.items = batch['items']
 
-        pending_items_manager.forget_all()
+        pending_items_manager.clear_all()
         global update_date
         update_date = batch['updateDate']
 
     def import_items(self):
         for item in self.items:
-            item_importer = self.ItemImporter(item)
-            item_importer.import_item()
+            self.handle_item(item)
+
+    def handle_item(self, item):
+        item_importer = self.ItemImporter(item)
+        item_importer.import_item()
+
+        for child_item_dict in pending_items_manager.get_pending_children(item['id']):
+            self.handle_item(child_item_dict)
+            print(child_item_dict['id'])
+            pass
+
 
     class ItemImporter:
 
@@ -30,12 +38,12 @@ class ItemsImporter:
             self.item_type = item['type']
             self.item_model = None
 
-
         def import_item(self):
             if self.must_add_parent_first():
                 self.remember_item_waiting_for_parent()
             else:
                 self.make_and_save_item_model()
+
 
         def must_add_parent_first(self):
             return (self.parent_item_id is not None) and (not item_exists(pk=self.parent_item_id))

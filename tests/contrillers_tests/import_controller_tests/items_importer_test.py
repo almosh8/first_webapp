@@ -1,9 +1,7 @@
-import json
-
 from django.test import TestCase
 
 from polls import config
-from polls.controllers.import_controller import *
+from polls.controllers.POST_controllers.import_controller import *
 from tests import tests_config
 
 
@@ -20,6 +18,7 @@ class ItemsImporterTest(TestCase):
         self.item_with_parent_absent = tests_config.TEST_OFFER_DICT
 
         self.import_item_class = config.ItemTypeDict['ITEM']
+
 
 
     def test_items_import(self):

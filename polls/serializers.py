@@ -39,41 +39,4 @@ class MySerializer:
         return json.dumps(self.dict_data)
 
 
-class ItemSerializer:
-    # item is Offer or Category instance
 
-    def get_children(self, item):
-        children = []
-        children_list = item.get_children()
-        print(item.name, children_list)
-        for child in children_list:
-            children.append(self.get_dict(child))
-        return children
-
-    def get_dict(self, item=None):
-        if item is None:
-            item = self.item
-        print(f'getting dict for {item.name}')
-
-        dict = {}
-        dict['type'] = OFFER if isinstance(item, Offer) else CATEGORY
-        dict['name'] = item.name
-        dict['id'] = item.id
-        dict['url'] = item.url
-        dict['parentId'] = None if item.parent_category is None else item.parent_category.id
-        dict['price'] = item.price if isinstance(item, Offer) else item.average_price()
-        dict['date'] = str(item.update_date.isoformat(timespec='milliseconds')).replace('+00:00', 'Z')
-        if self.include_children:
-            dict['children'] = None if isinstance(item, Offer) else self.get_children(item)
-
-        return dict
-
-    def __init__(self, item, include_children = True):
-        self.include_children = include_children
-        self.item = item
-
-    def get_json(self, dict=None):
-        if dict is None:
-            dict = self.get_dict()
-        #print(dict['children'])
-        return json.dumps(dict, ensure_ascii=False).encode('utf8')

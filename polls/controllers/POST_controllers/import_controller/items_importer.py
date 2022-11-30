@@ -1,8 +1,8 @@
 from dateutil.parser import isoparse
 
 from polls.config import ItemTypeString
-from polls.controllers.import_controller import ChildRemover, ChildAdder, pending_items_manager
-from polls.controllers.models_objects_queries.item_objects_queries.get_queries import item_exists, get_item
+from polls.controllers.POST_controllers.import_controller import ChildRemover, ChildAdder, pending_items_manager
+from polls.controllers.models_objects_queries.item_objects_queries.get_queries import item_exists_in_db, get_item_model
 from polls.models.items.Category import Category
 from polls.models.items.Offer import Offer
 
@@ -46,7 +46,7 @@ class ItemsImporter:
 
 
         def must_add_parent_first(self):
-            return (self.parent_item_id is not None) and (not item_exists(pk=self.parent_item_id))
+            return (self.parent_item_id is not None) and (not item_exists_in_db(pk=self.parent_item_id))
 
         def remember_item_waiting_for_parent(self):
             pending_items_manager.add_pending_item(self.parent_item_id, self.item)
@@ -70,7 +70,7 @@ class ItemsImporter:
             self.item_model.price = self.item['price']
 
         def set_specific_category_model_properties(self):
-            existing_category_model = get_item(self.item['id'])
+            existing_category_model = get_item_model(self.item['id'])
             if existing_category_model is not None:
                 self.item_model.sum_children = existing_category_model.sum_children
                 self.item_model.count_children = existing_category_model.count_children
@@ -80,7 +80,7 @@ class ItemsImporter:
             self.item_model.name = self.item['name']
             self.item_model.id = self.item['id']
             if self.parent_item_id is not None:
-                self.item_model.parent_category = get_item(self.parent_item_id)
+                self.item_model.parent_category = get_item_model(self.parent_item_id)
             global update_date
             self.item_model.update_date = isoparse(update_date)
 
@@ -90,7 +90,7 @@ class ItemsImporter:
             self.item_model.save()
 
         def update_existing_variant_parents(self):
-            existing_item_model = get_item(self.item_model.id)
+            existing_item_model = get_item_model(self.item_model.id)
             if existing_item_model is not None:
                 item_remover = ChildRemover(existing_item_model)
                 item_remover.update_parents()

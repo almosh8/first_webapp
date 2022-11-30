@@ -1,4 +1,6 @@
-from polls.models import Offer, Category
+from polls.models.items.Category import Category
+from polls.models.items.Offer import Offer
+
 
 def item_price(item):
     if isinstance(item, Offer):
@@ -14,9 +16,3 @@ def average_price(category):
         return category.sum_children // category.count_children
     except ZeroDivisionError:
         return 0
-
-
-
-
-
-

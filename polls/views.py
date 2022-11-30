@@ -1,39 +1,26 @@
 import datetime
-import json
-from dateutil.parser import isoparse
 from django.core.exceptions import ObjectDoesNotExist
 
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound
-from datetime import datetime as dt
-
-from rest_framework import status
-from rest_framework.decorators import api_view, parser_classes
-from rest_framework.parsers import JSONParser
+from django.http import HttpResponse
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from my_web_app import settings
-import pytz
-
+from polls.controllers.POST_controllers.import_controller import *
 from polls.models import Offer, Category
 from polls.serializers import ItemSerializer, MyDeserializer, MySerializer
 
 SUCCESS_CODE = 200
 
 
-def index(request):
-    return HttpResponse("Time now is ")
-
-
 @api_view(['POST'])
-# @parser_classes([JSONParser])
 def add_items(request):
     data_json = request.body.decode('utf8')  # decode bytes to JSON
     print(f'import request with data={data_json}')
     deserializer = MyDeserializer(json_data=data_json)
-    batch = deserializer.get_dict()
+    batch_dict = deserializer.get_dict()
 
-
+    items_importer = ItemsImporter(batch_dict)
+    items_importer.import_items()
 
     return Response(status=SUCCESS_CODE)
 
@@ -55,7 +42,7 @@ def delete(request, pk):
     return HttpResponse(status=SUCCESS_CODE)
 
 @api_view(['GET'])
-def nodes(request, pk):
+def export_items(request, pk):
     try:
         item = Category.objects.get(pk=pk)
     except ObjectDoesNotExist:

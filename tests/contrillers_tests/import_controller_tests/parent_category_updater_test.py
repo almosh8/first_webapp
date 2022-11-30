@@ -1,10 +1,7 @@
-import json
-
 from django.test import TestCase
-from django.utils.datetime_safe import datetime
 from django.utils.timezone import now
 
-from polls.controllers.import_controller.parent_category_updater import *
+from polls.controllers.POST_controllers.import_controller.parent_category_updater import *
 from polls.models import Category, Offer
 
 

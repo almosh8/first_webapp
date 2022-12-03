@@ -1,47 +1,29 @@
-from polls.controllers.models_objects_queries.item_objects_queries.get_queries import item_exists_in_db, get_item_model
-
-class ItemsExporter:
-
-    def __init__(self, parent_item_id):
-        self.parent_item_model = get_item_model(parent_item_id)
-
-    def get_dict(self, item=None):
-        if item is None:
-            item = self.item
-        print(f'getting dict for {item.name}')
-
-        dict = {}
-        dict['type'] = OFFER if isinstance(item, Offer) else CATEGORY
-        dict['name'] = item.name
-        dict['id'] = item.id
-        dict['url'] = item.url
-        dict['parentId'] = None if item.parent_category is None else item.parent_category.id
-        dict['price'] = item.price if isinstance(item, Offer) else item.average_price()
-        dict['date'] = str(item.update_date.isoformat(timespec='milliseconds')).replace('+00:00', 'Z')
-        if self.include_children:
-            dict['children'] = None if isinstance(item, Offer) else self.get_children(item)
-
-        return dict
-
-    class ItemSerializer:
-        # item is Offer or Category instance
-
-        def get_children(self, item):
-            children = []
-            children_list = item.get_children()
-            print(item.name, children_list)
-            for child in children_list:
-                children.append(self.get_dict(child))
-            return children
+from polls.config import ItemDictKeys
+from polls.controllers.GET_controllers.model_to_dict_transformer import make_item_dict_from_model
+from polls.controllers.models_objects_queries.item_objects_queries.get_queries import get_item_model, get_child_items_model_list
 
 
+def __init__(self, root_item_id):
+    self.root_item_model = get_item_model(root_item_id)
+    self.subtree_dict = make_item_dict_from_model(self.root_item_model)
 
-        def __init__(self, item, include_children=True):
-            self.include_children = include_children
-            self.item = item
 
-        def get_json(self, dict=None):
-            if dict is None:
-                dict = self.get_dict()
-            # print(dict['children'])
-            return json.dumps(dict, ensure_ascii=False).encode('utf8')
+def get_item_subtree_dict(item_id):
+    item_model = get_item_model(item_id)
+    item_dict = make_item_dict_from_model(item_model)
+    add_children_to_item_dict(item_model, item_dict)
+
+    return item_dict
+
+
+def add_children_to_item_dict(item_model, item_dict):
+    child_items_dict_list = get_child_items_dict_list(item_model)
+    item_dict[ItemDictKeys.CHILDREN_LIST.value] = child_items_dict_list
+
+
+def get_child_items_dict_list(item_model):
+    children = []
+    children_model_list = get_child_items_model_list(item_model)
+    for child_model in children_model_list:
+        children.append(get_item_subtree_dict(child_model))
+    return children

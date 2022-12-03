@@ -17,7 +17,7 @@ class ItemsImporterTest(TestCase):
 
         self.item_with_parent_absent = tests_config.TEST_OFFER_DICT
 
-        self.import_item_class = config.ItemTypeDict['ITEM']
+        self.import_item_class = config.ItemTypeClass.ITEM.value
 
 
 

@@ -2,11 +2,11 @@ from polls.models.items.Category import Category
 from polls.models.items.Offer import Offer
 
 
-def item_price(item):
-    if isinstance(item, Offer):
-        return item.price
-    elif isinstance(item, Category):
-        return average_price(category=item)
+def item_price(item_model):
+    if isinstance(item_model, Offer):
+        return item_model.price
+    elif isinstance(item_model, Category):
+        return average_price(category=item_model)
     else:
         raise TypeError
 

@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from polls.controllers.POST_controllers.import_controller import *
 from polls.models import Offer, Category
-from polls.serializers import ItemSerializer, MyDeserializer, MySerializer
+from polls.serializers import MyDeserializer, MySerializer
 
 SUCCESS_CODE = 200
 

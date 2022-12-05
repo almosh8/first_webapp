@@ -14,6 +14,11 @@ class ItemTypeClass(Enum):
     OFFER = Offer
     ITEM = Item
 
+item_type_class_dict = {
+    ItemTypeString.CATEGORY.value: ItemTypeClass.CATEGORY.value,
+    ItemTypeString.OFFER.value: ItemTypeClass.OFFER.value
+}
+
 class ItemDictKeys(Enum):
     TYPE = 'type'
     NAME = 'name'

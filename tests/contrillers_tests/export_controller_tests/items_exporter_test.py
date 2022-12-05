@@ -1,7 +1,6 @@
 from polls.config import ItemDictKeys, item_type_class_dict
 from polls.models.items.Item import Item
 
-# to be inherited by TestCase class where asserts are implemented
 class ModelValidator:
     def assert_items_added(self, import_items_dicts_list):
         for import_item_dict in import_items_dicts_list:

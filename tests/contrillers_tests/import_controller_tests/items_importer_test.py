@@ -10,17 +10,12 @@ from tests.model_validator import ModelValidator
 class ItemsImporterTest(TestCase, ModelValidator):
 
     def setUp(self):
-        self.import_items_batch = tests_config.IMPORT_ITEMS_DICT
-        self.import_items_dicts_list = self.import_items_batch['items']
+        self.import_items_batch = tests_config.IMPORT_ITEMS_BATCH
+        self.import_items_dicts_list = tests_config.IMPORT_ITEMS_DICTS_LIST
 
-
-
-        self.import_item_dict = self.import_items_dicts_list[0]
+        self.import_item_dict = tests_config.TEST_CATEGORY_DICT
 
         self.item_with_parent_absent = tests_config.TEST_OFFER_DICT
-
-        self.import_item_class = config.ItemTypeClass.ITEM.value
-
 
 
     def test_items_import(self):
@@ -30,7 +25,7 @@ class ItemsImporterTest(TestCase, ModelValidator):
         self.assert_items_added(self.import_items_dicts_list)
 
     def test_reversed_items_import(self):
-        reversed_import_items_batch = tests_config.IMPORT_ITEMS_DICT
+        reversed_import_items_batch = tests_config.IMPORT_ITEMS_BATCH
         reversed_import_items_batch['items'] = list(reversed(reversed_import_items_batch['items']))
         reversed_import_items_dicts_list = reversed_import_items_batch['items']
 
@@ -67,7 +62,3 @@ class ItemsImporterTest(TestCase, ModelValidator):
         self.assert_item_model_properties_match(self.import_item_dict, item_model)
 
         self.assert_items_added([self.import_item_dict])
-
-
-
-

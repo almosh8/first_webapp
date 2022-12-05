@@ -7,7 +7,7 @@ def __init__(self, root_item_id):
     self.root_item_model = get_item_model(root_item_id)
     self.subtree_dict = make_item_dict_from_model(self.root_item_model)
 
-def export_item_subtree_dict(root_item_id):
+def get_export_item_subtree_dict(root_item_id):
     item_model = get_item_model(root_item_id)
     return get_item_subtree_dict(item_model)
 

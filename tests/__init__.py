@@ -6,6 +6,5 @@ from .contrillers_tests.recent_sales_controller_tests import *
 
 from .contrillers_tests.models_objects_queries_tests.item_objects_queries_tests.get_queries_tests import *
 from .contrillers_tests.models_objects_queries_tests.item_objects_queries_tests.delete_queries_tests import *
-from .contrillers_tests.models_objects_queries_tests.item_objects_queries_tests.update_queries_tests import *
 
 from .serializers_tests import *

@@ -151,8 +151,37 @@ EXPECTED_TREE = {
     ]
 }
 
-IMPORT_ITEMS_BATCH = IMPORT_BATCHES[1]
+TEST_SUBTREE = {
+    "type": "CATEGORY",
+    "name": "Смартфоны",
+    "id": "d515e43f-f3f6-4471-bb77-6b455017a2d2",
+    "parentId": None,
+    "price": 69999,
+    "date": "2022-02-02T12:00:00.000Z",
+    "children": [
+        {
+            "type": "OFFER",
+            "name": "jPhone 13",
+            "id": "863e1a7a-1304-42ae-943b-179184c077e3",
+            "parentId": "d515e43f-f3f6-4471-bb77-6b455017a2d2",
+            "price": 79999,
+            "date": "2022-02-02T12:00:00.000Z",
+            "children": None
+        },
+        {
+            "type": "OFFER",
+            "name": "Xomiа Readme 10",
+            "id": "b1d8fd7d-2ae3-47d5-b2f9-0f094af800d4",
+            "parentId": "d515e43f-f3f6-4471-bb77-6b455017a2d2",
+            "price": 59999,
+            "date": "2022-02-02T12:00:00.000Z",
+            "children": None
+        }
+    ]
+}
+
+IMPORT_ITEMS_BATCH = IMPORT_BATCHES[1] # Смартфоны subtree
 IMPORT_ITEMS_DICTS_LIST = IMPORT_ITEMS_BATCH['items']
 TEST_CATEGORY_DICT = IMPORT_ITEMS_DICTS_LIST[0]
 TEST_OFFER_DICT = IMPORT_ITEMS_DICTS_LIST[2]
-
+EXPORT_ITEMS_SUBTREE_DICT = TEST_SUBTREE # Смартфоны category

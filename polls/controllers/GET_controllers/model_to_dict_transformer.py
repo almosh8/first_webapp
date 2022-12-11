@@ -1,9 +1,7 @@
 from polls import config
 from polls.config import ItemTypeString, ItemDictKeys
 from polls.controllers.GET_controllers.item_price_calculator import item_price
-from polls.controllers.models_objects_queries.item_objects_queries.get_queries import get_item_model
-from polls.models.items.Category import Category
-from polls.models.items.Offer import Offer
+
 
 def make_item_dict_from_model(item_model):
     item_dict = {}

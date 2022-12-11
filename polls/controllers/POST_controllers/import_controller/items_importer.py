@@ -1,8 +1,9 @@
 from dateutil.parser import isoparse
 
 from polls.config import ItemTypeString
-from polls.controllers.POST_controllers.import_controller import ChildRemover, ChildAdder, pending_items_manager
+from polls.controllers.POST_controllers.import_controller import pending_items_manager
 from polls.controllers.models_objects_queries.item_objects_queries.get_queries import item_exists_in_db, get_item_model
+from polls.controllers.parent_category_updater import ChildRemover, ChildAdder
 from polls.models.items.Category import Category
 from polls.models.items.Offer import Offer
 
@@ -26,7 +27,6 @@ class ItemsImporter:
 
         for child_item_dict in pending_items_manager.get_pending_children(item['id']):
             self.handle_item(child_item_dict)
-            print(child_item_dict['id'])
             pass
 
 

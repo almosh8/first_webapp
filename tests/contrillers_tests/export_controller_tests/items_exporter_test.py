@@ -3,7 +3,7 @@ from django.test import TestCase
 
 from polls.config import ItemDictKeys, item_type_class_dict
 from polls.controllers.GET_controllers.export_controller.items_exporter import get_export_item_subtree_dict
-from polls.controllers.POST_controllers.import_controller import ItemsImporter
+from polls.controllers.POST_controllers.import_controller.items_importer import ItemsImporter
 from polls.models.items.Item import Item
 from tests import tests_config
 

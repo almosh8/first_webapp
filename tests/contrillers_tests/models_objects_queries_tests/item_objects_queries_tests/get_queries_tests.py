@@ -1,17 +1,18 @@
 from django.test import TestCase
 
 from polls.config import ItemDictKeys
-from polls.controllers.POST_controllers.import_controller import ItemsImporter
+from polls.controllers.POST_controllers.import_controller.items_importer import ItemsImporter
 from polls.controllers.models_objects_queries.item_objects_queries.get_queries import *
 from polls.models.items.Category import Category
 from tests import tests_config, ModelValidator
 
 
-class ItemsImporterTest(TestCase, ModelValidator):
+class GetQueriesTest(TestCase, ModelValidator):
 
     EXTRA_CHARACTER = '#'
 
     def setUp(self):
+
         self.import_items_batch = tests_config.IMPORT_ITEMS_BATCH
         self.import_items_dicts_list = tests_config.IMPORT_ITEMS_DICTS_LIST
 
@@ -19,8 +20,7 @@ class ItemsImporterTest(TestCase, ModelValidator):
         self.existing_offer_dict = tests_config.TEST_OFFER_DICT
         self.existing_item_id = self.existing_category_dict[ItemDictKeys.ID.value]
         self.absent_item_id = self.existing_item_id + self.EXTRA_CHARACTER
-        # there is one category in batch and all other items are its children
-        self.children_count = len(self.import_items_dicts_list) - 1
+        self.children_count = tests_config.TEST_CATEGORY_CHILDREN_COUNT
 
         # assume ItemsImporter is already tested and works correctly
         items_importer = ItemsImporter(self.import_items_batch)

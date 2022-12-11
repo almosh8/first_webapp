@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.utils.timezone import now
 
-from polls.controllers.POST_controllers.import_controller.parent_category_updater import *
+from polls.controllers.parent_category_updater import *
 from polls.models import Category, Offer
 
 

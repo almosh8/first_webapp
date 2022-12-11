@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from polls.controllers.DELETE_controllers.delete_controller.items_remover import remove_item_subtree
 from polls.controllers.GET_controllers.export_controller.items_exporter import get_export_item_subtree_dict
 from polls.controllers.POST_controllers.import_controller import *
 from polls.models import Offer, Category
@@ -27,17 +28,7 @@ def add_items(request):
 
 @api_view(['GET', 'DELETE'])
 def delete(request, pk):
-    try:
-        item = Category.objects.get(pk=pk)
-    except ObjectDoesNotExist:
-        try:
-            item = Offer.objects.get(pk=pk)
-        except ObjectDoesNotExist:
-            return HttpResponse('{"code": 404,"message": "Item not found"}', status=404)
-
-    if item.parent_category is not None:
-        item.parent_category.remove_child(item)
-    item.delete()
+    remove_item_subtree(pk)
 
 
     return HttpResponse(status=SUCCESS_CODE)

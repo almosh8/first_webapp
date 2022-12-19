@@ -1,12 +1,11 @@
 from polls.config import ItemDictKeys
 from polls.controllers.GET_controllers.model_to_dict_transformer import make_item_dict_from_model
-from polls.controllers.models_objects_queries.item_objects_queries.get_queries import get_item_model, \
-    get_child_items_model_list
-from polls.models.items.Item import Item
+from polls.controllers.models_objects_queries.item_objects_queries.get_queries import get_child_items_model_list
 
 
-class ItemSubtreeExporter:
+class ConditionalItemSubtreeExporter:
 
+    # specify item_validator if you want to export only specific items matching certain condition
     def __init__(self, root_item_model, item_validator=lambda x: True):
         self.root_item_model = root_item_model
         self.validate_item = item_validator

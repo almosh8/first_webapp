@@ -1,10 +1,9 @@
 from django.test import TestCase
 
-from polls import config
 from polls.config import ItemDictKeys, ItemTypeClass
 from polls.controllers.POST_controllers.import_controller.items_importer import *
 from tests import tests_config
-from tests.model_validator import ModelValidator
+from tests.utils.model_validator import ModelValidator
 
 
 class ItemsImporterTest(TestCase, ModelValidator):

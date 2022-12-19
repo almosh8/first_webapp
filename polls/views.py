@@ -44,25 +44,14 @@ def export_items(request, pk):
 @api_view(['GET'])
 def sales(request):
 
-    try:
-        date_str = request.GET['date']
-        print(f'sales request with date = {date_str}')
-        date_end = isoparse(date_str)
-    except ValueError:
-        return HttpResponse('{"code": 400,"message": "Validation Failed"}', status=400)
+    date_str = request.GET['date']
+    print(f'sales request with date = {date_str}')
+    date_end = isoparse(date_str)
 
-    date_start = date_end - datetime.timedelta(days=1)
+    export_data_dict = get_export_item_subtree_dict(pk)
+    json_data = get_json_from_dict(export_data_dict)
 
-    offers = Offer.objects.filter(update_date__range=(date_start, date_end))
-    offers_dicts = []
-    for offer in list(offers):
-        serializer = ItemSerializer(offer, include_children=False)
-        offer_dict = serializer.get_dict()
-        offers_dicts.append(offer_dict)
-
-    data_dict = {'items': offers_dicts}
-    serializer = MySerializer(data_dict)
-    data_json = serializer.get_json()
+    data_json = get_json_from_dict()
     return HttpResponse(data_json, status=SUCCESS_CODE)
 
 @api_view(['GET'])

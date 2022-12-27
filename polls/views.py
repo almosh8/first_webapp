@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from polls.controllers.DELETE_controllers.delete_controller.items_remover import remove_item_subtree
 from polls.controllers.GET_controllers.export_controller.items_exporter import get_export_item_subtree_dict
 from polls.controllers.POST_controllers.import_controller import *
+from polls.controllers.POST_controllers.import_controller.items_importer import ItemsImporter
 from polls.models import Offer, Category
 from polls.serializers import *
 
@@ -16,7 +17,7 @@ SUCCESS_CODE = 200
 
 @api_view(['POST'])
 def add_items(request):
-    data_json = request.body.decode('utf8')  # decode bytes to JSON
+    data_json = request.body.decode()  # decode bytes to JSON
     print(f'import request with data={data_json}')
 
     batch_dict = get_dict_from_json(data_json)

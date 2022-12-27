@@ -6,9 +6,9 @@ from polls.controllers.models_objects_queries.item_objects_queries.get_queries i
 class ConditionalItemSubtreeExporter:
 
     # specify item_validator if you want to export only specific items matching certain condition
-    def __init__(self, root_item_model, item_validator=lambda x: True):
+    def __init__(self, root_item_model, items_filter=lambda x: True):
         self.root_item_model = root_item_model
-        self.validate_item = item_validator
+        self.validate_item = items_filter
 
     def export_item_subtree_dict(self):
         return self.__get_item_subtree_dict(self.root_item_model)

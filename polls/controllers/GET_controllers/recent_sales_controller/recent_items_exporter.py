@@ -1,12 +1,18 @@
+import datetime
+
 from polls.config import ItemDictKeys
 from polls.controllers.GET_controllers.model_to_dict_transformer import make_item_dict_from_model
 from polls.controllers.models_objects_queries.item_objects_queries.get_queries import get_item_model, get_child_items_model_list
 
-# this will be implemented after critical functionality tests
-def get_export_item_subtree_dict(root_item_id):
-    date_start = date_end - datetime.timedelta(days=1)
+REQUIRED_DAYS_INTERVAL = 1
 
-    offers = Offer.objects.filter(update_date__range=(date_start, date_end))
+def get_recent_items_subtree_dicts(date_end):
+    date_start = date_end - datetime.timedelta(days=REQUIRED_DAYS_INTERVAL)
+
+
+
+
+offers = Offer.objects.filter(update_date__range=(date_start, date_end))
     offers_dicts = []
     for offer in list(offers):
         serializer = ItemSerializer(offer, include_children=False)

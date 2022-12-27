@@ -13,6 +13,7 @@ class GetUrlTest(TestCase):
     def setUp(self):
         self.client = RequestsClient()
 
+        self.import_items_batch = tests_config.IMPORT_ITEMS_BATCH
         self.expected_subtree_dict = tests_config.TEST_SUBTREE
         self.root_item_dict = tests_config.IMPORT_ITEMS_DICTS_LIST[0]
         self.root_item_id = self.root_item_dict[ItemDictKeys.ID.value]

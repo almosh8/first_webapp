@@ -7,4 +7,4 @@ from .contrillers_tests.recent_sales_controller_tests import *
 from .contrillers_tests.models_objects_queries_tests.item_objects_queries_tests.get_queries_tests import *
 from .contrillers_tests.models_objects_queries_tests.item_objects_queries_tests.delete_queries_tests import *
 
-from .API_tests.export_API_tests.get_url_test import *
+from .API_tests.export_API_tests.export_url_test import *

@@ -6,34 +6,27 @@ from rest_framework.test import RequestsClient
 from polls.config import ItemDictKeys
 from polls.controllers.POST_controllers.import_controller.items_importer import ItemsImporter
 from tests import tests_config
+from tests.utils.model_validator import ModelValidator
 
 
-class GetUrlTest(TestCase):
+class PostUrlTest(TestCase, ModelValidator):
 
     def setUp(self):
         self.client = RequestsClient()
 
         self.import_items_batch = tests_config.IMPORT_ITEMS_BATCH
-        self.expected_subtree_dict = tests_config.TEST_SUBTREE
-        self.root_item_dict = tests_config.IMPORT_ITEMS_DICTS_LIST[0]
-        self.root_item_id = self.root_item_dict[ItemDictKeys.ID.value]
+        self.expected_imported_items_dicts_list = tests_config.IMPORT_ITEMS_DICTS_LIST
 
         self.prefix_url = 'http://testserver'
-        self.post_url = '/imports/'
-        self.get_root_url = self.prefix_url + self.post_url
-
-
-        # assume ItemsImporter is already tested and works correctly
-        items_importer = ItemsImporter(self.import_items_batch)
-        items_importer.import_items()
+        self.post_url = '/imports'
+        self.post_full_url = self.prefix_url + self.post_url
 
 
 
 
 
     def test_export_request(self):
-        response = self.client.post(self.post_url)
-        response_content = response.content.decode()
-        response_content = json.loads(response_content)
+        response = self.client.post(self.post_full_url, json=self.import_items_batch)
         self.assertEquals(response.status_code, 200)
-        self.assertEquals(response_content, self.expected_subtree_dict)
+
+        self.assert_items_added(self.expected_imported_items_dicts_list)

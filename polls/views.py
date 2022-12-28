@@ -14,18 +14,24 @@ from polls.serializers import *
 
 SUCCESS_CODE = 200
 
-
 @api_view(['POST'])
 def add_items(request):
-    data_json = request.body.decode()  # decode bytes to JSON
-    print(f'import request with data={data_json}')
-
-    batch_dict = get_dict_from_json(data_json)
+    batch_dict = fetch_dict_from_request(request)
+    print(f'import request with data={batch_dict}')
 
     items_importer = ItemsImporter(batch_dict)
     items_importer.import_items()
 
     return Response(status=SUCCESS_CODE)
+
+def fetch_dict_from_request(request):
+    try:
+        data_json = request.body.decode()  # decode bytes to JSON
+    except Exception as e:
+        print(e)
+
+    batch_dict = get_dict_from_json(data_json)
+    return batch_dict
 
 @api_view(['GET', 'DELETE'])
 def delete(request, pk):

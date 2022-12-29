@@ -9,3 +9,4 @@ from .contrillers_tests.models_objects_queries_tests.item_objects_queries_tests.
 
 from .API_tests.export_API_tests.export_url_test import *
 from .API_tests.import_API_tests.imports_url_test import *
+from .API_tests.delete_API_tests.delete_url_test import *

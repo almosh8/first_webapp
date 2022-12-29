@@ -6,22 +6,19 @@ from rest_framework.test import RequestsClient
 from polls.config import ItemDictKeys
 from polls.controllers.POST_controllers.import_controller.items_importer import ItemsImporter
 from tests import tests_config
-from tests.utils.model_validator import ModelValidator
+from tests.utils.imported_models_validator import ImportedModelsValidator
 
 
-class PostUrlTest(TestCase, ModelValidator):
+class PostUrlTest(TestCase, ImportedModelsValidator):
 
     def setUp(self):
         self.client = RequestsClient()
-
-        self.import_items_batch = tests_config.IMPORT_ITEMS_BATCH
-        self.expected_imported_items_dicts_list = tests_config.IMPORT_ITEMS_DICTS_LIST
-
         self.prefix_url = 'http://testserver'
         self.post_url = '/imports'
         self.post_full_url = self.prefix_url + self.post_url
 
-
+        self.import_items_batch = tests_config.IMPORT_ITEMS_BATCH
+        self.expected_imported_items_dicts_list = tests_config.IMPORT_ITEMS_DICTS_LIST
 
 
 

@@ -1,6 +1,5 @@
 from django.db import models
 
-from polls.models.items.Category import Category
 from polls.models.items.Item import Item
 
 

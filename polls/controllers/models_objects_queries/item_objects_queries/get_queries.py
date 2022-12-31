@@ -1,6 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 
-from . import item_objects, category_objects, offer_objects
+from . import item_objects
 
 
 def item_exists_in_db(pk):

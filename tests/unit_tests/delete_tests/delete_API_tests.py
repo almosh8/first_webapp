@@ -1,12 +1,9 @@
-from django.test import TestCase
-
-from rest_framework.test import RequestsClient
+from rest_framework.test import APITestCase
 from tests.unit_tests.delete_tests.abstract_delete_tests import AbstractItemsRemoverTests
 
 
-class ItemsRemoverAPITests(AbstractItemsRemoverTests, TestCase):
+class ItemsRemoverAPITests(AbstractItemsRemoverTests, APITestCase):
 
-    client = RequestsClient()
     prefix_url = 'http://testserver'
     get_url = '/delete/'
 

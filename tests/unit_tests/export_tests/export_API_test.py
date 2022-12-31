@@ -1,14 +1,10 @@
 import json
 
-from django.test import TestCase
-
-from rest_framework.test import RequestsClient
+from rest_framework.test import APITestCase
 from tests.unit_tests.export_tests.abstract_export_tests import AbstractItemsExporterTest
 
 
-class ItemsExporterAPITests(AbstractItemsExporterTest, TestCase):
-
-    client = RequestsClient()
+class ItemsExporterAPITests(AbstractItemsExporterTest, APITestCase):
     prefix_url = 'http://testserver'
     get_url = '/nodes/'
 

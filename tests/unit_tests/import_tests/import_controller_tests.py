@@ -3,10 +3,10 @@ from django.test import TestCase
 from polls.config import ItemDictKeys, ItemTypeClass
 from polls.controllers.POST_controllers.import_controller.items_importer import *
 from tests import tests_config
-from tests.utils.imported_models_validator import ImportedModelsValidator
+from tests.utils.models_validator import ModelsValidator
 
 
-class ItemsImporterTest(TestCase, ImportedModelsValidator):
+class ItemsImporterTest(TestCase, ModelsValidator):
 
     def setUp(self):
         self.import_items_batch = tests_config.IMPORT_ITEMS_BATCH
@@ -16,7 +16,6 @@ class ItemsImporterTest(TestCase, ImportedModelsValidator):
         self.import_item_class = ItemTypeClass[self.import_item_dict[ItemDictKeys.TYPE.value]].value
 
         self.item_with_parent_absent = tests_config.TEST_OFFER_DICT
-
 
     def test_items_import(self):
         items_importer = ItemsImporter(self.import_items_batch)

@@ -4,10 +4,11 @@ from polls.config import ItemDictKeys
 from polls.controllers.POST_controllers.import_controller.items_importer import ItemsImporter
 from polls.controllers.models_objects_queries.item_objects_queries.get_queries import *
 from polls.models.items.Category import Category
-from tests import tests_config, ImportedModelsValidator
+from tests import tests_config
+from tests.utils.one_model_validator import ModelValidator
 
 
-class GetQueriesTest(TestCase, ImportedModelsValidator):
+class GetQueriesTest(TestCase, ModelValidator):
 
     EXTRA_CHARACTER = '#'
 

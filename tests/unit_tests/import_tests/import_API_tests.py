@@ -6,10 +6,10 @@ from rest_framework.test import RequestsClient
 from polls.config import ItemDictKeys
 from polls.controllers.POST_controllers.import_controller.items_importer import ItemsImporter
 from tests import tests_config
-from tests.utils.imported_models_validator import ImportedModelsValidator
+from tests.utils.models_validator import ModelsValidator
 
 
-class PostUrlTest(TestCase, ImportedModelsValidator):
+class PostUrlTest(TestCase, ModelsValidator):
 
     def setUp(self):
         self.client = RequestsClient()

@@ -1,14 +1,11 @@
-from django.test import TestCase
-
-
-from polls.config import ItemDictKeys, item_type_class_dict
-from polls.controllers.GET_controllers.export_controller.items_exporter import get_export_item_subtree_dict
+from polls.config import ItemDictKeys
 from polls.controllers.POST_controllers.import_controller.items_importer import ItemsImporter
-from polls.models.items.Item import Item
 from tests import tests_config
 
 
-class ItemsExporterTest(TestCase):
+# to be inherited by concrete TestCase class where get_export_item_subtree_dict and asserts are implemented
+
+class AbstractItemsExporterTest():
 
     def setUp(self):
         self.import_items_batch = tests_config.IMPORT_ITEMS_BATCH
@@ -21,6 +18,6 @@ class ItemsExporterTest(TestCase):
         items_importer.import_items()
 
     def test_get_item_subtree_dict(self):
-        result_subtree_dict = get_export_item_subtree_dict(self.root_item_id)
+        result_subtree_dict = self.get_export_item_subtree_dict(self.root_item_id)
 
         self.assertEquals(result_subtree_dict, self.export_items_subtree_dict)

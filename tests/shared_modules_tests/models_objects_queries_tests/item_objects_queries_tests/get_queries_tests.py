@@ -5,10 +5,10 @@ from polls.controllers.POST_controllers.import_controller.items_importer import 
 from polls.controllers.models_objects_queries.item_objects_queries.get_queries import *
 from polls.models.items.Category import Category
 from tests import tests_config
-from tests.utils.one_model_validator import ModelValidator
+from tests.utils.model_properties_validator import ModelPropertiesValidator
 
 
-class GetQueriesTest(TestCase, ModelValidator):
+class GetQueriesTest(TestCase, ModelPropertiesValidator):
 
     EXTRA_CHARACTER = '#'
 

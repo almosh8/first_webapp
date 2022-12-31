@@ -1,29 +1,18 @@
-import json
-
 from django.test import TestCase
+
 from rest_framework.test import RequestsClient
 
-from polls.config import ItemDictKeys
-from polls.controllers.POST_controllers.import_controller.items_importer import ItemsImporter
-from tests import tests_config
-from tests.utils.models_validator import ModelsValidator
+from tests.unit_tests.import_tests.abstract_import_tests import AbstractItemsImporterTest
 
 
-class PostUrlTest(TestCase, ModelsValidator):
+class ItemsImporterAPITests(AbstractItemsImporterTest, TestCase):
 
-    def setUp(self):
-        self.client = RequestsClient()
-        self.prefix_url = 'http://testserver'
-        self.post_url = '/imports'
-        self.post_full_url = self.prefix_url + self.post_url
+    client = RequestsClient()
+    prefix_url = 'http://testserver'
+    get_url = '/imports'
 
-        self.import_items_batch = tests_config.IMPORT_ITEMS_BATCH
-        self.expected_imported_items_dicts_list = tests_config.IMPORT_ITEMS_DICTS_LIST
-
-
-
-    def test_export_request(self):
-        response = self.client.post(self.post_full_url, json=self.import_items_batch)
+    def import_items(self, import_items_batch):
+        import_items_url = self.prefix_url + self.get_url
+        response = self.client.post(import_items_url, json=import_items_batch)
         self.assertEquals(response.status_code, 200)
 
-        self.assert_items_added(self.expected_imported_items_dicts_list)

@@ -14,9 +14,10 @@ from polls.serializers import *
 
 SUCCESS_CODE = 200
 
+
 @api_view(['POST'])
 def add_items(request):
-    batch_dict = fetch_dict_from_request(request)
+    batch_dict = get_dict_from_request(request)
     print(f'import request with data={batch_dict}')
 
     items_importer = ItemsImporter(batch_dict)
@@ -24,33 +25,31 @@ def add_items(request):
 
     return Response(status=SUCCESS_CODE)
 
-def fetch_dict_from_request(request):
-    try:
-        data_json = request.body.decode()  # decode bytes to JSON
-    except Exception as e:
-        print(e)
+
+def get_dict_from_request(request):
+    data_json = request.body.decode()  # decode bytes to JSON
 
     batch_dict = get_dict_from_json(data_json)
     return batch_dict
+
 
 @api_view(['GET', 'DELETE'])
 def delete(request, pk):
     remove_item_subtree(pk)
 
-
     return HttpResponse(status=SUCCESS_CODE)
+
 
 @api_view(['GET'])
 def export_items(request, pk):
-
     export_data_dict = get_export_item_subtree_dict(pk)
     json_data = get_json_from_dict(export_data_dict)
 
     return HttpResponse(json_data, status=SUCCESS_CODE)
 
+
 @api_view(['GET'])
 def sales(request):
-
     date_str = request.GET['date']
     print(f'sales request with date = {date_str}')
     date_end = isoparse(date_str)
@@ -60,6 +59,7 @@ def sales(request):
 
     data_json = get_json_from_dict()
     return HttpResponse(data_json, status=SUCCESS_CODE)
+
 
 @api_view(['GET'])
 def statistic(request, pk):

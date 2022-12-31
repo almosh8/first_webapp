@@ -1,6 +1,7 @@
 from polls.config import ItemDictKeys, item_type_class_dict
 
-class ModelValidator:
+
+class ModelPropertiesValidator:
     def assert_item_model_properties_match(self, item_dict, item_model):
         self.assertIsInstance(item_model, item_type_class_dict[item_dict[ItemDictKeys.TYPE.value]])
         self.assertEquals(item_dict[ItemDictKeys.ID.value], item_model.id)

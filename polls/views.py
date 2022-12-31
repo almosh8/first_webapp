@@ -27,7 +27,7 @@ def add_items(request):
 
 
 def get_dict_from_request(request):
-    data_json = request.body.decode()  # decode bytes to JSON
+    data_json = request.body.decode(encoding='utf-8')  # decode bytes to JSON
 
     batch_dict = get_dict_from_json(data_json)
     return batch_dict
